@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #FAFAFA; }
+  a { color: #0D1117; text-decoration: none; }
+  a:hover { color: #4F46E5; }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</helmet>
+
+<div style="width: 1440px; margin: 0 auto; background: #FAFAFA; font-family: Inter, sans-serif; color: #0D1117;">
+
+  <!-- Nav bar -->
+  <header data-screen-label="Nav" style="height: 88px; background: #FFFFFF; border-bottom: 1px solid #E5E7EB; display: flex; align-items: center; justify-content: center;">
+    <div style="width: 1128px; display: flex; align-items: center;">
+      <a href="#" style="font-family: Geist, Inter, sans-serif; font-size: 20px; font-weight: 600; line-height: 24px; color: #0D1117; display: flex; align-items: center; gap: 8px;">
+        <span style="width: 24px; height: 24px; border-radius: 6px; background: #4F46E5; display: inline-flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 13px; font-weight: 700;">S</span>
+        Nowak
+      </a>
+      <nav style="display: flex; align-items: center; gap: 40px; margin-left: 64px; font-size: 15px; font-weight: 500; line-height: 20px;">
+        <a href="#" onClick="{{ goProduct }}" style="cursor: pointer; color: #0D1117;" style-hover="color: #4F46E5;">Product</a>
+        <a href="#" onClick="{{ goSolutions }}" style="cursor: pointer; color: #0D1117;" style-hover="color: #4F46E5;">Solutions</a>
+        <a href="#" onClick="{{ goPricing }}" style="cursor: pointer; color: #0D1117;" style-hover="color: #4F46E5;">Pricing</a>
+        <a href="#" onClick="{{ goResources }}" style="cursor: pointer; color: #0D1117;" style-hover="color: #4F46E5;">Resources</a>
+      </nav>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 16px;">
+        <a href="#" onClick="{{ goSignIn }}" style="cursor: pointer; margin-right: 16px; font-size: 15px; font-weight: 500; line-height: 20px; color: #0D1117;" style-hover="color: #4F46E5;">Sign in</a>
+        <button onClick="{{ openTour }}" style="cursor: pointer; display: inline-flex; align-items: center; height: 40px; padding: 0 20px; border: 1px solid #E5E7EB; border-radius: 8px; background: transparent; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; line-height: 20px; color: #0D1117; transition: border-color 160ms ease, background 160ms ease;" style-hover="border-color: #C6CBD3; background: #FFFFFF;">Watch Product Tour</button>
+        <button onClick="{{ openDemo }}" style="cursor: pointer; display: inline-flex; align-items: center; height: 40px; padding: 0 20px; border: none; border-radius: 8px; background: #4F46E5; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; line-height: 20px; color: #FFFFFF; transition: background 160ms ease;" style-hover="background: #4338CA;">Book a Demo</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section data-screen-label="Hero" style="display: flex; flex-direction: column; align-items: center; padding-top: 96px; padding-bottom: 120px;">
+    <div style="max-width: 800px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+
+      <!-- Eyebrow: neutral outline pill, faint indigo tint -->
+      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: #5B6472; background: rgba(79, 70, 229, 0.04); border: 1px solid #E5E7EB; border-radius: 999px; padding: 8px 16px;">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #4F46E5;"></span>
+        Trusted by 500+ finance teams
+      </div>
+
+      <h1 style="margin: 24px 0 0; font-family: Geist, Inter, sans-serif; font-size: 64px; font-weight: 700; line-height: 67px; letter-spacing: -0.025em; color: #0D1117; text-wrap: balance;">Enterprise Finance, Finally&nbsp;Under&nbsp;Control.</h1>
+
+      <p style="margin: 24px 0 0; max-width: 680px; font-size: 20px; font-weight: 500; line-height: 30px; color: #5B6472; text-wrap: pretty;">Nowak consolidates forecasting and reconciliation into a single source of truth, delivering a verifiable 40% efficiency boost to finance teams—from day one.</p>
+
+      <div style="margin-top: 40px; display: flex; align-items: center; gap: 16px;">
+        <button onClick="{{ openDemo }}" style="cursor: pointer; display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 28px; border: none; border-radius: 10px; background: #4F46E5; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; line-height: 20px; color: #FFFFFF; box-shadow: 0 1px 2px rgba(13, 17, 23, 0.08), 0 8px 24px rgba(79, 70, 229, 0.25); transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;" style-hover="background: #4338CA; transform: scale(1.03); box-shadow: 0 2px 4px rgba(13, 17, 23, 0.1), 0 12px 32px rgba(79, 70, 229, 0.32);" style-active="transform: scale(0.98);">Book a Demo <span aria-hidden="true">→</span></button>
+        <button onClick="{{ openTour }}" style="cursor: pointer; display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 28px; border-radius: 10px; border: 1px solid #E5E7EB; background: #FFFFFF; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; line-height: 20px; color: #0D1117; transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;" style-hover="border-color: #C6CBD3; transform: scale(1.03); box-shadow: 0 4px 16px rgba(13, 17, 23, 0.06);" style-active="transform: scale(0.98);"><span style="width: 20px; height: 20px; border-radius: 50%; background: #F1F2F4; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; color: #0D1117;">▶</span> Watch Product Tour</button>
+      </div>
+
+      <!-- Grayscale logo strip -->
+      <div style="margin-top: 64px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+        <span style="font-size: 12px; font-weight: 500; line-height: 16px; letter-spacing: 1px; text-transform: uppercase; color: #9AA1AB;">Powering finance at</span>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 48px; filter: grayscale(1); opacity: 0.55;">
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 700; letter-spacing: -0.01em; color: #0D1117;">Vercel</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 600; font-style: italic; color: #0D1117;">Stripe</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #0D1117;">Notion</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 700; color: #0D1117;">Linear</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: 0.06em; color: #0D1117;">Ramp</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero visual: high-fidelity dashboard mock -->
+    <div data-screen-label="Dashboard visual" style="margin-top: 80px; width: 1128px; height: 640px; border-radius: 16px; border: 1px solid #E5E7EB; background: #FFFFFF; box-shadow: 0 1px 2px rgba(13, 17, 23, 0.04), 0 24px 64px rgba(13, 17, 23, 0.08); overflow: hidden; display: flex; text-align: left;">
+
+      <!-- Sidebar -->
+      <div style="width: 216px; flex-shrink: 0; border-right: 1px solid #F1F2F4; padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; background: #FCFCFD;">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 0 8px 20px; font-family: Geist, Inter, sans-serif; font-size: 15px; font-weight: 600; color: #0D1117;">
+          <span style="width: 20px; height: 20px; border-radius: 5px; background: #4F46E5; display: inline-flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 11px; font-weight: 700;">S</span>
+          Nowak
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; background: rgba(79, 70, 229, 0.08); font-size: 13px; font-weight: 600; color: #4F46E5;"><span style="width: 14px; height: 14px; border-radius: 4px; background: #4F46E5; opacity: 0.9;"></span>Overview</div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #5B6472;"><span style="width: 14px; height: 14px; border-radius: 4px; background: #C6CBD3;"></span>Forecasting</div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #5B6472;"><span style="width: 14px; height: 14px; border-radius: 4px; background: #C6CBD3;"></span>Spend</div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #5B6472;"><span style="width: 14px; height: 14px; border-radius: 4px; background: #C6CBD3;"></span>Reconciliation</div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #5B6472;"><span style="width: 14px; height: 14px; border-radius: 4px; background: #C6CBD3;"></span>Reports</div>
+      </div>
+
+      <!-- Main -->
+      <div style="flex: 1; padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; min-width: 0;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font-family: Geist, Inter, sans-serif; font-size: 18px; font-weight: 600; color: #0D1117;">Overview</div>
+            <div style="font-size: 12px; font-weight: 500; color: #9AA1AB; margin-top: 2px;">FY26 · Consolidated · Updated 2 min ago</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: #157F3D; background: #EBF7EF; border: 1px solid #D2EDDC; border-radius: 999px; padding: 5px 12px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #1FA750;"></span>Books audit-ready</div>
+        </div>
+
+        <!-- KPI cards -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+          <div style="border: 1px solid #F1F2F4; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 12px; font-weight: 500; color: #9AA1AB;">Cash position</span>
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 26px; font-weight: 700; color: #0D1117; letter-spacing: -0.01em;">$48.2M</span>
+            <span style="font-size: 12px; font-weight: 600; color: #157F3D;">▲ 3.1% vs. last close</span>
+          </div>
+          <div style="border: 1px solid #F1F2F4; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 12px; font-weight: 500; color: #9AA1AB;">Net burn (monthly)</span>
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 26px; font-weight: 700; color: #0D1117; letter-spacing: -0.01em;">$1.84M</span>
+            <span style="font-size: 12px; font-weight: 600; color: #157F3D;">▼ 6.4% under forecast</span>
+          </div>
+          <div style="border: 1px solid #F1F2F4; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 12px; font-weight: 500; color: #9AA1AB;">Unreconciled items</span>
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 26px; font-weight: 700; color: #0D1117; letter-spacing: -0.01em;">12</span>
+            <span style="font-size: 12px; font-weight: 600; color: #5B6472;">98.6% auto-matched</span>
+          </div>
+        </div>
+
+        <!-- Chart card -->
+        <div style="border: 1px solid #F1F2F4; border-radius: 12px; padding: 18px 20px; flex: 1; display: flex; flex-direction: column; gap: 14px; min-height: 0;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 13px; font-weight: 600; color: #0D1117;">Cash flow forecast</span>
+            <div style="display: flex; align-items: center; gap: 16px; font-size: 11px; font-weight: 500; color: #9AA1AB;">
+              <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 8px; height: 8px; border-radius: 2px; background: #4F46E5;"></span>Actual</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 8px; height: 8px; border-radius: 2px; background: #C7C9F4;"></span>Forecast</span>
+            </div>
+          </div>
+          <div style="flex: 1; display: flex; align-items: flex-end; gap: 14px; min-height: 120px;">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 42%; border-radius: 6px 6px 2px 2px; background: #4F46E5;"></div><span style="font-size: 10px; color: #9AA1AB;">Jan</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 55%; border-radius: 6px 6px 2px 2px; background: #4F46E5;"></div><span style="font-size: 10px; color: #9AA1AB;">Feb</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 48%; border-radius: 6px 6px 2px 2px; background: #4F46E5;"></div><span style="font-size: 10px; color: #9AA1AB;">Mar</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 63%; border-radius: 6px 6px 2px 2px; background: #4F46E5;"></div><span style="font-size: 10px; color: #9AA1AB;">Apr</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 58%; border-radius: 6px 6px 2px 2px; background: #4F46E5;"></div><span style="font-size: 10px; color: #9AA1AB;">May</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 70%; border-radius: 6px 6px 2px 2px; background: #4F46E5;"></div><span style="font-size: 10px; color: #9AA1AB;">Jun</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 74%; border-radius: 6px 6px 2px 2px; background: #C7C9F4;"></div><span style="font-size: 10px; color: #9AA1AB;">Jul</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 79%; border-radius: 6px 6px 2px 2px; background: #C7C9F4;"></div><span style="font-size: 10px; color: #9AA1AB;">Aug</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 85%; border-radius: 6px 6px 2px 2px; background: #C7C9F4;"></div><span style="font-size: 10px; color: #9AA1AB;">Sep</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scheduling modal (Cal.com-style) -->
+  <sc-if value="{{ demoOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position: fixed; inset: 0; background: rgba(13, 17, 23, 0.48); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; animation: overlayIn 180ms ease;">
+      <div onClick="{{ stopProp }}" style="width: 720px; background: #FFFFFF; border-radius: 16px; box-shadow: 0 32px 80px rgba(13, 17, 23, 0.3); overflow: hidden; animation: modalIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1); font-family: Inter, sans-serif;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #F1F2F4;">
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 17px; font-weight: 600; color: #0D1117;">Book a demo</span>
+            <span style="font-size: 13px; font-weight: 500; color: #9AA1AB;">30 min · Google Meet · with a Nowak finance specialist</span>
+          </div>
+          <button onClick="{{ closeModal }}" style="cursor: pointer; width: 32px; height: 32px; border-radius: 8px; border: 1px solid #E5E7EB; background: #FFFFFF; color: #5B6472; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: border-color 160ms ease;" style-hover="border-color: #C6CBD3;">✕</button>
+        </div>
+        <div style="padding: 24px; display: flex; flex-direction: column; gap: 20px;">
+          <div style="display: flex; gap: 10px;">
+            <sc-for list="{{ days }}" as="day" hint-placeholder-count="5">
+              <button onClick="{{ day.pick }}" style="cursor: pointer; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 0; border-radius: 10px; border: 1px solid {{ day.border }}; background: {{ day.bg }}; transition: border-color 160ms ease;">
+                <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: {{ day.subColor }};">{{ day.dow }}</span>
+                <span style="font-family: Geist, Inter, sans-serif; font-size: 18px; font-weight: 600; color: {{ day.color }};">{{ day.date }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+            <sc-for list="{{ times }}" as="t" hint-placeholder-count="8">
+              <button onClick="{{ t.pick }}" style="cursor: pointer; padding: 11px 0; border-radius: 8px; border: 1px solid {{ t.border }}; background: {{ t.bg }}; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; color: {{ t.color }}; transition: border-color 160ms ease;" style-hover="border-color: #4F46E5;">{{ t.label }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ confirmDemo }}" disabled="{{ confirmDisabled }}" style="cursor: pointer; height: 48px; border: none; border-radius: 10px; background: {{ confirmBg }}; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; color: #FFFFFF; transition: background 160ms ease;">{{ confirmLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Video tour modal -->
+  <sc-if value="{{ tourOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position: fixed; inset: 0; background: rgba(13, 17, 23, 0.72); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 100; animation: overlayIn 180ms ease;">
+      <div onClick="{{ stopProp }}" style="width: 960px; animation: modalIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 15px; font-weight: 600; color: #FFFFFF;">Nowak Product Tour · 2:47</span>
+          <button onClick="{{ closeModal }}" style="cursor: pointer; width: 32px; height: 32px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.25); background: transparent; color: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center;" style-hover="border-color: rgba(255,255,255,0.6);">✕</button>
+        </div>
+        <div style="width: 960px; height: 540px; border-radius: 14px; background: #0D1117; box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; position: relative; overflow: hidden;">
+          <button onClick="{{ togglePlay }}" style="cursor: pointer; width: 76px; height: 76px; border-radius: 50%; border: none; background: rgba(255, 255, 255, 0.95); color: #0D1117; font-size: 22px; display: flex; align-items: center; justify-content: center; padding-left: {{ playPad }}; transition: transform 160ms ease;" style-hover="transform: scale(1.08);">{{ playGlyph }}</button>
+          <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: #9AA1AB;">embed slot — Vimeo / Wistia player, 16:9</span>
+          <div style="position: absolute; left: 24px; right: 24px; bottom: 20px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.15);"><div style="width: {{ playProgress }}; height: 100%; border-radius: 2px; background: #4F46E5; transition: width 300ms linear;"></div></div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Stub-navigation toast -->
+  <sc-if value="{{ toastVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%); z-index: 200; display: flex; align-items: center; gap: 10px; background: #0D1117; color: #FFFFFF; font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; line-height: 20px; border-radius: 10px; padding: 12px 18px; box-shadow: 0 12px 32px rgba(13, 17, 23, 0.35); animation: modalIn 200ms cubic-bezier(0.2, 0.8, 0.2, 1);">
+      <span style="width: 6px; height: 6px; border-radius: 50%; background: #4F46E5;"></span>
+      {{ toastText }}
+    </div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { modal: null, day: 1, time: null, confirmed: false, playing: false, progress: 18, toast: null };
+
+  nav(label) {
+    clearTimeout(this.toastTimer);
+    this.setState({ toast: label + ' — page coming soon' });
+    this.toastTimer = setTimeout(() => this.setState({ toast: null }), 2200);
+  }
+
+  componentDidMount() {
+    this.onKey = (e) => { if (e.key === 'Escape') this.setState({ modal: null }); };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKey);
+    clearTimeout(this.toastTimer);
+    clearInterval(this.playTimer);
+  }
+
+  renderVals() {
+    const { modal, day, time, confirmed } = this.state;
+    const dayData = [
+      { dow: 'Mon', date: '13' }, { dow: 'Tue', date: '14' }, { dow: 'Wed', date: '15' },
+      { dow: 'Thu', date: '16' }, { dow: 'Fri', date: '17' },
+    ];
+    const timeData = ['9:00 AM', '9:30 AM', '10:00 AM', '11:30 AM', '1:00 PM', '2:30 PM', '4:00 PM', '4:30 PM'];
+
+    const days = dayData.map((d, i) => {
+      const sel = i === day;
+      return {
+        dow: d.dow, date: d.date,
+        border: sel ? '#4F46E5' : '#E5E7EB',
+        bg: sel ? 'rgba(79, 70, 229, 0.06)' : '#FFFFFF',
+        color: sel ? '#4F46E5' : '#0D1117',
+        subColor: sel ? '#4F46E5' : '#9AA1AB',
+        pick: () => this.setState({ day: i, time: null, confirmed: false }),
+      };
+    });
+
+    const times = timeData.map((label, i) => {
+      const sel = i === time;
+      return {
+        label,
+        border: sel ? '#4F46E5' : '#E5E7EB',
+        bg: sel ? '#4F46E5' : '#FFFFFF',
+        color: sel ? '#FFFFFF' : '#0D1117',
+        pick: () => this.setState({ time: i, confirmed: false }),
+      };
+    });
+
+    const canConfirm = time !== null;
+    return {
+      demoOpen: modal === 'demo',
+      tourOpen: modal === 'tour',
+      openDemo: () => this.setState({ modal: 'demo', confirmed: false }),
+      openTour: () => this.setState({ modal: 'tour' }),
+      closeModal: () => { clearInterval(this.playTimer); this.setState({ modal: null, playing: false, progress: 18 }); },
+      goProduct: (e) => { e.preventDefault(); this.nav('Product'); },
+      goSolutions: (e) => { e.preventDefault(); this.nav('Solutions'); },
+      goPricing: (e) => { e.preventDefault(); this.nav('Pricing'); },
+      goResources: (e) => { e.preventDefault(); this.nav('Resources'); },
+      goSignIn: (e) => { e.preventDefault(); this.nav('Sign in'); },
+      toastVisible: !!this.state.toast,
+      toastText: this.state.toast,
+      togglePlay: () => {
+        const playing = !this.state.playing;
+        clearInterval(this.playTimer);
+        if (playing) {
+          this.playTimer = setInterval(() => {
+            const p = this.state.progress + 1;
+            if (p >= 100) { clearInterval(this.playTimer); this.setState({ progress: 100, playing: false }); }
+            else this.setState({ progress: p });
+          }, 300);
+        }
+        this.setState({ playing });
+      },
+      playing: this.state.playing,
+      playGlyph: this.state.playing ? '❚❚' : '▶',
+      playPad: this.state.playing ? '0' : '6px',
+      playProgress: this.state.progress + '%',
+      stopProp: (e) => e.stopPropagation(),
+      days, times,
+      confirmDisabled: !canConfirm,
+      confirmBg: confirmed ? '#1FA750' : (canConfirm ? '#4F46E5' : '#C6CBD3'),
+      confirmLabel: confirmed
+        ? '✓ Confirmed — invite sent to your calendar'
+        : (canConfirm ? 'Confirm ' + timeData[time] + ' · ' + dayData[day].dow + ', Jul ' + dayData[day].date : 'Select a time'),
+      confirmDemo: () => { if (canConfirm) this.setState({ confirmed: true }); },
+    };
+  }
+}
+</script>
+</body>
+</html>

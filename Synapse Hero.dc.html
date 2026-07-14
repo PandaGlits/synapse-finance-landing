@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #FAFAFA; }
+  a { color: #0D1117; text-decoration: none; }
+  a:hover { color: #4F46E5; }
+</style>
+</helmet>
+
+<div style="width: 1440px; margin: 0 auto; background: #FAFAFA; font-family: Inter, sans-serif; color: #0D1117;">
+
+  <!-- Nav bar -->
+  <header data-screen-label="Nav" style="height: 88px; background: #FFFFFF; border-bottom: 1px solid #E5E7EB; display: flex; align-items: center; justify-content: center;">
+    <div style="width: 1128px; display: flex; align-items: center;">
+      <a href="#" style="font-family: Geist, Inter, sans-serif; font-size: 20px; font-weight: 600; line-height: 24px; color: #0D1117; display: flex; align-items: center; gap: 8px;">
+        <span style="width: 24px; height: 24px; border-radius: 6px; background: #4F46E5; display: inline-flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 13px; font-weight: 700;">S</span>
+        Synapse
+      </a>
+      <nav style="display: flex; align-items: center; gap: 40px; margin-left: 64px; font-size: 15px; font-weight: 500; line-height: 20px;">
+        <a href="#" style="color: #0D1117;" style-hover="color: #4F46E5;">Product</a>
+        <a href="#" style="color: #0D1117;" style-hover="color: #4F46E5;">Solutions</a>
+        <a href="#" style="color: #0D1117;" style-hover="color: #4F46E5;">Pricing</a>
+        <a href="#" style="color: #0D1117;" style-hover="color: #4F46E5;">Resources</a>
+      </nav>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 16px;">
+        <a href="#" style="margin-right: 16px; font-size: 15px; font-weight: 500; line-height: 20px; color: #0D1117;" style-hover="color: #4F46E5;">Sign in</a>
+        <a href="#" style="display: inline-flex; align-items: center; height: 40px; padding: 0 20px; border: 1px solid #E5E7EB; border-radius: 8px; background: transparent; font-size: 15px; font-weight: 600; line-height: 20px; color: #0D1117;" style-hover="border-color: #0D1117; color: #0D1117;">Watch Product Tour</a>
+        <a href="#" style="display: inline-flex; align-items: center; height: 40px; padding: 0 20px; border-radius: 8px; background: #4F46E5; font-size: 15px; font-weight: 600; line-height: 20px; color: #FFFFFF;" style-hover="background: #4338CA; color: #FFFFFF;">Book a Demo</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section data-screen-label="Hero" style="display: flex; flex-direction: column; align-items: center; padding-top: 96px; padding-bottom: 120px;">
+    <div style="max-width: 760px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+      <sc-if value="{{ showEyebrow }}" hint-placeholder-val="{{ true }}">
+        <div style="font-size: 13px; font-weight: 600; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: #4F46E5; background: rgba(79, 70, 229, 0.07); border: 1px solid rgba(79, 70, 229, 0.18); border-radius: 999px; padding: 8px 16px;">Trusted by 500+ finance teams</div>
+      </sc-if>
+      <h1 style="margin: 24px 0 0; font-family: Geist, Inter, sans-serif; font-size: 64px; font-weight: 700; line-height: 68px; letter-spacing: -0.02em; color: #0D1117; text-wrap: balance;">Enterprise Finance, Finally Under Control.</h1>
+      <p style="margin: 24px 0 0; max-width: 640px; font-size: 20px; font-weight: 400; line-height: 30px; color: #5B6472; text-wrap: pretty;">Synapse unifies forecasting, spend, and reconciliation into a single source of truth — giving finance leaders a 40% efficiency boost and audit-ready books, every single day.</p>
+      <div style="margin-top: 40px; display: flex; align-items: center; gap: 16px;">
+        <a href="#" style="display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 28px; border-radius: 10px; background: #4F46E5; font-size: 15px; font-weight: 600; line-height: 20px; color: #FFFFFF; box-shadow: 0 1px 2px rgba(13, 17, 23, 0.08), 0 8px 24px rgba(79, 70, 229, 0.25);" style-hover="background: #4338CA; color: #FFFFFF;">Book a Demo <span aria-hidden="true">→</span></a>
+        <a href="#" style="display: inline-flex; align-items: center; height: 52px; padding: 0 28px; border-radius: 10px; border: 1px solid #E5E7EB; background: #FFFFFF; font-size: 15px; font-weight: 600; line-height: 20px; color: #0D1117;" style-hover="border-color: #0D1117; color: #0D1117;">Watch Product Tour</a>
+      </div>
+    </div>
+
+    <!-- Hero product visual placeholder -->
+    <div style="margin-top: 80px; width: 1128px; height: 640px; border-radius: 16px; border: 1px solid #E5E7EB; background: #FFFFFF; box-shadow: 0 1px 2px rgba(13, 17, 23, 0.04), 0 24px 64px rgba(13, 17, 23, 0.08); overflow: hidden; display: flex; align-items: center; justify-content: center; background-image: repeating-linear-gradient(-45deg, #FFFFFF 0, #FFFFFF 24px, #FAFAFB 24px, #FAFAFB 48px);">
+      <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; color: #5B6472; background: #FFFFFF; border: 1px dashed #E5E7EB; border-radius: 8px; padding: 10px 16px;">hero product visual — dashboard mockup, 1128×640</span>
+    </div>
+  </section>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showEyebrow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showEyebrow: this.props.showEyebrow ?? true,
+    };
+  }
+}
+</script>
+</body>
+</html>

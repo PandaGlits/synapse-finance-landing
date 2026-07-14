@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style data-omelette-print-defaults>
+@media print {
+  @page { margin: 0.5in; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  figure, table, pre, blockquote, img, svg, tr, [class~="card" i] { break-inside: avoid; }
+  img, svg { max-width: 100%; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #0A0C10; }
+  a { color: #F2F4F8; text-decoration: none; }
+  a:hover { color: #6366F1; }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</helmet>
+
+<div style="width: 1440px; margin: 0 auto; background: #0A0C10; font-family: Inter, sans-serif; color: #F2F4F8;">
+
+  <!-- Nav bar -->
+  <header data-screen-label="Nav" style="height: 88px; background: #151A22; border-bottom: 1px solid #232A35; display: flex; align-items: center; justify-content: center;">
+    <div style="width: 1128px; display: flex; align-items: center;">
+      <a href="#" onClick="{{ goHome }}" style="cursor: pointer; font-family: Geist, Inter, sans-serif; font-size: 20px; font-weight: 600; line-height: 24px; color: #F2F4F8; display: flex; align-items: center; gap: 8px;">
+        <span style="width: 24px; height: 24px; border-radius: 6px; background: #6366F1; display: inline-flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 13px; font-weight: 700;">S</span>
+        Nowak
+      </a>
+      <nav style="display: flex; align-items: center; gap: 40px; margin-left: 64px; font-size: 15px; font-weight: 500; line-height: 20px;">
+        <sc-for list="{{ navLinks }}" as="n" hint-placeholder-count="4">
+          <div style="position: relative; display: flex;" onMouseEnter="{{ n.enter }}" onMouseLeave="{{ n.leave }}">
+            <a href="#" onClick="{{ n.go }}" style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; color: {{ n.color }}; transition: color 160ms ease;" style-hover="color: #6366F1;">{{ n.label }}<span style="font-size: 9px; opacity: 0.7;">{{ n.caret }}</span></a>
+            <sc-if value="{{ n.open }}" hint-placeholder-val="{{ false }}">
+              <div style="position: absolute; top: 100%; left: -12px; padding-top: 14px; min-width: 264px; background: transparent;"><div style="background: #151A22; border: 1px solid #232A35; border-radius: 12px; padding: 8px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; gap: 2px; z-index: 60; animation: modalIn 180ms cubic-bezier(0.2, 0.8, 0.2, 1);">
+                <sc-for list="{{ n.items }}" as="it" hint-placeholder-count="3">
+                  <a href="#" onClick="{{ it.go }}" style="cursor: pointer; display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 8px; color: #F2F4F8; transition: background 160ms ease;" style-hover="background: rgba(99, 102, 241, 0.08); color: #F2F4F8;">
+                    <span style="font-size: 14px; font-weight: 600; line-height: 18px;">{{ it.label }}</span>
+                    <span style="font-size: 12px; font-weight: 500; line-height: 16px; color: #7A8494;">{{ it.desc }}</span>
+                  </a>
+                </sc-for>
+              </div></div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </nav>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 16px;">
+        <a href="#" onClick="{{ goSignIn }}" style="cursor: pointer; margin-right: 16px; font-size: 15px; font-weight: 500; line-height: 20px; color: #F2F4F8;" style-hover="color: #6366F1;">Sign in</a>
+        <button onClick="{{ openTour }}" style="cursor: pointer; display: inline-flex; align-items: center; height: 40px; padding: 0 20px; border: 1px solid #232A35; border-radius: 8px; background: transparent; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; line-height: 20px; color: #F2F4F8; transition: border-color 160ms ease, background 160ms ease;" style-hover="border-color: #39424F; background: #151A22;">Watch Product Tour</button>
+        <button onClick="{{ openDemo }}" style="cursor: pointer; display: inline-flex; align-items: center; height: 40px; padding: 0 20px; border: none; border-radius: 8px; background: #6366F1; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; line-height: 20px; color: #FFFFFF; transition: background 160ms ease;" style-hover="background: #7C81F4;">Book a Demo</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section data-screen-label="Hero" style="display: flex; flex-direction: column; align-items: center; padding-top: 96px; padding-bottom: 120px;">
+    <div style="max-width: 800px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+
+      <!-- Eyebrow: neutral outline pill, faint indigo tint -->
+      <sc-if value="{{ showEyebrow }}" hint-placeholder-val="{{ true }}">
+      <div style="display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: #9AA4B2; background: rgba(99, 102, 241, 0.04); border: 1px solid #232A35; border-radius: 999px; padding: 8px 16px;">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #6366F1;"></span>
+        Trusted by 500+ finance teams
+      </div>
+      </sc-if>
+
+      <h1 style="margin: 24px 0 0; font-family: Geist, Inter, sans-serif; font-size: 64px; font-weight: 700; line-height: 67px; letter-spacing: -0.025em; color: #F2F4F8; text-wrap: balance;">Enterprise Finance, Finally&nbsp;Under&nbsp;Control.</h1>
+
+      <p style="margin: 24px 0 0; max-width: 680px; font-size: 20px; font-weight: 500; line-height: 30px; color: #9AA4B2; text-wrap: pretty;">Nowak consolidates forecasting and reconciliation into a single source of truth, delivering a verifiable 40% efficiency boost to finance teams—from day one.</p>
+
+      <div style="margin-top: 40px; display: flex; align-items: center; gap: 16px;">
+        <button onClick="{{ openDemo }}" style="cursor: pointer; display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 28px; border: none; border-radius: 10px; background: #6366F1; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; line-height: 20px; color: #FFFFFF; box-shadow: 0 1px 2px rgba(13, 17, 23, 0.08), 0 8px 24px rgba(99, 102, 241, 0.35); transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;" style-hover="background: #7C81F4; transform: scale(1.03); box-shadow: 0 2px 4px rgba(13, 17, 23, 0.1), 0 12px 32px rgba(99, 102, 241, 0.45);" style-active="transform: scale(0.98);">Book a Demo <span aria-hidden="true">→</span></button>
+        <button onClick="{{ openTour }}" style="cursor: pointer; display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 28px; border-radius: 10px; border: 1px solid #232A35; background: #151A22; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; line-height: 20px; color: #F2F4F8; transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;" style-hover="border-color: #39424F; transform: scale(1.03); box-shadow: 0 4px 16px rgba(13, 17, 23, 0.06);" style-active="transform: scale(0.98);"><span style="width: 20px; height: 20px; border-radius: 50%; background: #1E242E; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; color: #F2F4F8;">▶</span> Watch Product Tour</button>
+      </div>
+
+      <!-- Grayscale logo strip -->
+      <sc-if value="{{ showLogoStrip }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top: 64px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+        <span style="font-size: 12px; font-weight: 500; line-height: 16px; letter-spacing: 1px; text-transform: uppercase; color: #7A8494;">Powering finance at</span>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 48px; filter: grayscale(1); opacity: 0.55;">
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 700; letter-spacing: -0.01em; color: #F2F4F8;">Vercel</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 600; font-style: italic; color: #F2F4F8;">Stripe</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #F2F4F8;">Notion</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 700; color: #F2F4F8;">Linear</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: 0.06em; color: #F2F4F8;">Ramp</span>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+
+    <!-- Hero visual: high-fidelity dashboard mock -->
+    <div data-screen-label="Dashboard visual" style="margin-top: 80px; width: 1128px; height: 640px; border-radius: 16px; border: 1px solid #232A35; background: #151A22; box-shadow: 0 1px 2px rgba(13, 17, 23, 0.04), 0 24px 64px rgba(13, 17, 23, 0.08); overflow: hidden; display: flex; text-align: left;">
+
+      <!-- Sidebar -->
+      <div style="width: 216px; flex-shrink: 0; border-right: 1px solid #1E242E; padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; background: #0E1218;">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 0 8px 20px; font-family: Geist, Inter, sans-serif; font-size: 15px; font-weight: 600; color: #F2F4F8;">
+          <span style="width: 20px; height: 20px; border-radius: 5px; background: #6366F1; display: inline-flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 11px; font-weight: 700;">S</span>
+          Nowak
+        </div>
+        <sc-for list="{{ tabs }}" as="tab" hint-placeholder-count="5">
+          <button onClick="{{ tab.pick }}" style="cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: none; border-radius: 8px; text-align: left; font-family: Inter, sans-serif; background: {{ tab.bg }}; font-size: 13px; font-weight: {{ tab.weight }}; color: {{ tab.color }}; transition: background 160ms ease, color 160ms ease;" style-hover="background: rgba(99, 102, 241, 0.06);" style-active="transform: scale(0.98);"><span style="width: 14px; height: 14px; border-radius: 4px; background: {{ tab.iconBg }}; transition: background 160ms ease;"></span>{{ tab.label }}</button>
+        </sc-for>
+      </div>
+
+      <!-- Main -->
+      <div style="flex: 1; padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; min-width: 0;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font-family: Geist, Inter, sans-serif; font-size: 18px; font-weight: 600; color: #F2F4F8;">Overview</div>
+            <div style="font-size: 12px; font-weight: 500; color: #7A8494; margin-top: 2px;">FY26 · Consolidated · Updated 2 min ago</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: #4ADE80; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(74, 222, 128, 0.25); border-radius: 999px; padding: 5px 12px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #22C55E;"></span>Books audit-ready</div>
+        </div>
+
+        <!-- KPI cards -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+          <div style="border: 1px solid #1E242E; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 12px; font-weight: 500; color: #7A8494;">Cash position</span>
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 26px; font-weight: 700; color: #F2F4F8; letter-spacing: -0.01em;">$48.2M</span>
+            <span style="font-size: 12px; font-weight: 600; color: #4ADE80;">▲ 3.1% vs. last close</span>
+          </div>
+          <div style="border: 1px solid #1E242E; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 12px; font-weight: 500; color: #7A8494;">Net burn (monthly)</span>
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 26px; font-weight: 700; color: #F2F4F8; letter-spacing: -0.01em;">$1.84M</span>
+            <span style="font-size: 12px; font-weight: 600; color: #4ADE80;">▼ 6.4% under forecast</span>
+          </div>
+          <div style="border: 1px solid #1E242E; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 12px; font-weight: 500; color: #7A8494;">Unreconciled items</span>
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 26px; font-weight: 700; color: #F2F4F8; letter-spacing: -0.01em;">12</span>
+            <span style="font-size: 12px; font-weight: 600; color: #9AA4B2;">98.6% auto-matched</span>
+          </div>
+        </div>
+
+        <!-- Chart card -->
+        <div style="border: 1px solid #1E242E; border-radius: 12px; padding: 18px 20px; flex: 1; display: flex; flex-direction: column; gap: 14px; min-height: 0;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 13px; font-weight: 600; color: #F2F4F8;">Cash flow forecast</span>
+            <div style="display: flex; align-items: center; gap: 16px; font-size: 11px; font-weight: 500; color: #7A8494;">
+              <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 8px; height: 8px; border-radius: 2px; background: #6366F1;"></span>Actual</span>
+              <span style="display: inline-flex; align-items: center; gap: 6px;"><span style="width: 8px; height: 8px; border-radius: 2px; background: #3D3F7A;"></span>Forecast</span>
+            </div>
+          </div>
+          <div style="flex: 1; display: flex; align-items: flex-end; gap: 14px; min-height: 120px;">
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 42%; border-radius: 6px 6px 2px 2px; background: #6366F1;"></div><span style="font-size: 10px; color: #7A8494;">Jan</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 55%; border-radius: 6px 6px 2px 2px; background: #6366F1;"></div><span style="font-size: 10px; color: #7A8494;">Feb</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 48%; border-radius: 6px 6px 2px 2px; background: #6366F1;"></div><span style="font-size: 10px; color: #7A8494;">Mar</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 63%; border-radius: 6px 6px 2px 2px; background: #6366F1;"></div><span style="font-size: 10px; color: #7A8494;">Apr</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 58%; border-radius: 6px 6px 2px 2px; background: #6366F1;"></div><span style="font-size: 10px; color: #7A8494;">May</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 70%; border-radius: 6px 6px 2px 2px; background: #6366F1;"></div><span style="font-size: 10px; color: #7A8494;">Jun</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 74%; border-radius: 6px 6px 2px 2px; background: #3D3F7A;"></div><span style="font-size: 10px; color: #7A8494;">Jul</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 79%; border-radius: 6px 6px 2px 2px; background: #3D3F7A;"></div><span style="font-size: 10px; color: #7A8494;">Aug</span></div>
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end;"><div style="width: 100%; height: 85%; border-radius: 6px 6px 2px 2px; background: #3D3F7A;"></div><span style="font-size: 10px; color: #7A8494;">Sep</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product section -->
+  <section id="section-product" data-screen-label="Product section" style="display: flex; justify-content: center; border-top: 1px solid #1E242E; padding: 96px 0;">
+    <div style="width: 1128px; display: flex; flex-direction: column; gap: 48px;">
+      <div style="max-width: 620px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 13px; font-weight: 600; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: #6366F1;">Product</span>
+        <h2 style="margin: 0; font-family: Geist, Inter, sans-serif; font-size: 40px; font-weight: 700; line-height: 44px; letter-spacing: -0.02em; color: #F2F4F8; text-wrap: balance;">One platform for the entire close.</h2>
+        <p style="margin: 0; font-size: 17px; font-weight: 500; line-height: 26px; color: #9AA4B2; text-wrap: pretty;">Every workflow your finance team runs — connected to the same ledger, updated in real time.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+        <div style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 12px; transition: border-color 160ms ease, transform 160ms ease;" style-hover="border-color: #39424F; transform: translateY(-2px);">
+          <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(99, 102, 241, 0.12); display: flex; align-items: center; justify-content: center;"><span style="width: 14px; height: 14px; border-radius: 4px; background: #6366F1;"></span></span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 600; color: #F2F4F8;">Forecasting</span>
+          <span style="font-size: 14px; font-weight: 500; line-height: 22px; color: #9AA4B2;">Driver-based models that reforecast automatically as actuals land — no spreadsheet rebuilds.</span>
+        </div>
+        <div style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 12px; transition: border-color 160ms ease, transform 160ms ease;" style-hover="border-color: #39424F; transform: translateY(-2px);">
+          <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(99, 102, 241, 0.12); display: flex; align-items: center; justify-content: center;"><span style="width: 14px; height: 14px; border-radius: 50%; background: #6366F1;"></span></span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 600; color: #F2F4F8;">Spend Management</span>
+          <span style="font-size: 14px; font-weight: 500; line-height: 22px; color: #9AA4B2;">Approvals, cards, and accruals in one flow — every dollar coded before it hits the ledger.</span>
+        </div>
+        <div style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 12px; transition: border-color 160ms ease, transform 160ms ease;" style-hover="border-color: #39424F; transform: translateY(-2px);">
+          <span style="width: 36px; height: 36px; border-radius: 10px; background: rgba(99, 102, 241, 0.12); display: flex; align-items: center; justify-content: center;"><span style="width: 14px; height: 4px; border-radius: 2px; background: #6366F1; box-shadow: 0 6px 0 #6366F1;"></span></span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 600; color: #F2F4F8;">Reconciliation</span>
+          <span style="font-size: 14px; font-weight: 500; line-height: 22px; color: #9AA4B2;">98%+ auto-matching across banks and ERPs, with a full audit trail on every exception.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solutions section -->
+  <section id="section-solutions" data-screen-label="Solutions section" style="display: flex; justify-content: center; border-top: 1px solid #1E242E; padding: 96px 0;">
+    <div style="width: 1128px; display: flex; flex-direction: column; gap: 48px;">
+      <div style="max-width: 620px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 13px; font-weight: 600; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: #6366F1;">Solutions</span>
+        <h2 style="margin: 0; font-family: Geist, Inter, sans-serif; font-size: 40px; font-weight: 700; line-height: 44px; letter-spacing: -0.02em; color: #F2F4F8; text-wrap: balance;">Built for every seat in finance.</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+        <div style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 12px; transition: border-color 160ms ease, transform 160ms ease;" style-hover="border-color: #39424F; transform: translateY(-2px);">
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 600; color: #F2F4F8;">For CFOs</span>
+          <span style="font-size: 14px; font-weight: 500; line-height: 22px; color: #9AA4B2;">Board-ready numbers on demand: live cash, burn, and runway with drill-down to the transaction.</span>
+        </div>
+        <div style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 12px; transition: border-color 160ms ease, transform 160ms ease;" style-hover="border-color: #39424F; transform: translateY(-2px);">
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 600; color: #F2F4F8;">For Controllers</span>
+          <span style="font-size: 14px; font-weight: 500; line-height: 22px; color: #9AA4B2;">Close in days, not weeks — continuous reconciliation keeps the books audit-ready all month.</span>
+        </div>
+        <div style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 12px; transition: border-color 160ms ease, transform 160ms ease;" style-hover="border-color: #39424F; transform: translateY(-2px);">
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 19px; font-weight: 600; color: #F2F4F8;">For FP&amp;A Teams</span>
+          <span style="font-size: 14px; font-weight: 500; line-height: 22px; color: #9AA4B2;">Scenario planning on live actuals — swap assumptions and see the P&amp;L impact instantly.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing section -->
+  <section id="section-pricing" data-screen-label="Pricing section" style="display: flex; justify-content: center; border-top: 1px solid #1E242E; padding: 96px 0;">
+    <div style="width: 1128px; display: flex; flex-direction: column; gap: 48px;">
+      <div style="max-width: 620px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 13px; font-weight: 600; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: #6366F1;">Pricing</span>
+        <h2 style="margin: 0; font-family: Geist, Inter, sans-serif; font-size: 40px; font-weight: 700; line-height: 44px; letter-spacing: -0.02em; color: #F2F4F8; text-wrap: balance;">Simple plans that scale with your ledger.</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch;">
+        <div style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 32px 28px; display: flex; flex-direction: column; gap: 20px;">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 17px; font-weight: 600; color: #F2F4F8;">Starter</span>
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; color: #F2F4F8;">$499<span style="font-size: 15px; font-weight: 500; color: #7A8494;"> /mo</span></span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 500; line-height: 20px; color: #9AA4B2;">
+            <span>Up to 2 entities</span>
+            <span>Forecasting &amp; reconciliation</span>
+            <span>Bank + ERP connectors</span>
+          </div>
+          <button onClick="{{ openDemo }}" style="cursor: pointer; margin-top: auto; height: 44px; border-radius: 10px; border: 1px solid #232A35; background: transparent; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; color: #F2F4F8; transition: border-color 160ms ease;" style-hover="border-color: #39424F;">Start with Starter</button>
+        </div>
+        <div style="background: #11161E; border: 1px solid #6366F1; border-radius: 14px; padding: 32px 28px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.35), 0 16px 48px rgba(99, 102, 241, 0.15); position: relative;">
+          <span style="position: absolute; top: -12px; left: 28px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #FFFFFF; background: #6366F1; border-radius: 999px; padding: 4px 12px;">Most popular</span>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 17px; font-weight: 600; color: #F2F4F8;">Growth</span>
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; color: #F2F4F8;">$1,200<span style="font-size: 15px; font-weight: 500; color: #7A8494;"> /mo</span></span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 500; line-height: 20px; color: #9AA4B2;">
+            <span>Unlimited entities</span>
+            <span>Spend management &amp; approvals</span>
+            <span>Scenario planning</span>
+            <span>SSO &amp; audit logs</span>
+          </div>
+          <button onClick="{{ openDemo }}" style="cursor: pointer; margin-top: auto; height: 44px; border: none; border-radius: 10px; background: #6366F1; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; color: #FFFFFF; transition: background 160ms ease;" style-hover="background: #7C81F4;">Book a Demo</button>
+        </div>
+        <div style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 32px 28px; display: flex; flex-direction: column; gap: 20px;">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 17px; font-weight: 600; color: #F2F4F8;">Enterprise</span>
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; color: #F2F4F8;">Custom</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 500; line-height: 20px; color: #9AA4B2;">
+            <span>Dedicated implementation</span>
+            <span>Custom controls &amp; workflows</span>
+            <span>99.9% uptime SLA</span>
+          </div>
+          <button onClick="{{ openDemo }}" style="cursor: pointer; margin-top: auto; height: 44px; border-radius: 10px; border: 1px solid #232A35; background: transparent; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; color: #F2F4F8; transition: border-color 160ms ease;" style-hover="border-color: #39424F;">Talk to Sales</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources section -->
+  <section id="section-resources" data-screen-label="Resources section" style="display: flex; justify-content: center; border-top: 1px solid #1E242E; padding: 96px 0 140px;">
+    <div style="width: 1128px; display: flex; flex-direction: column; gap: 48px;">
+      <div style="max-width: 620px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 13px; font-weight: 600; line-height: 16px; letter-spacing: 0.5px; text-transform: uppercase; color: #6366F1;">Resources</span>
+        <h2 style="margin: 0; font-family: Geist, Inter, sans-serif; font-size: 40px; font-weight: 700; line-height: 44px; letter-spacing: -0.02em; color: #F2F4F8; text-wrap: balance;">Guides from teams who closed faster.</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+        <a href="#" style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 10px; color: #F2F4F8; transition: border-color 160ms ease, transform 160ms ease;" style-hover="border-color: #39424F; transform: translateY(-2px); color: #F2F4F8;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #6366F1;">Guide</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 17px; font-weight: 600; line-height: 23px;">The 3-day close: a playbook</span>
+          <span style="margin-top: auto; font-size: 12px; font-weight: 500; color: #7A8494;">12 min read</span>
+        </a>
+        <a href="#" style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 10px; color: #F2F4F8; transition: border-color 160ms ease, transform 160ms ease;" style-hover="border-color: #39424F; transform: translateY(-2px); color: #F2F4F8;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #6366F1;">Benchmark</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 17px; font-weight: 600; line-height: 23px;">2026 finance ops benchmarks</span>
+          <span style="margin-top: auto; font-size: 12px; font-weight: 500; color: #7A8494;">8 min read</span>
+        </a>
+        <a href="#" style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 10px; color: #F2F4F8; transition: border-color 160ms ease, transform 160ms ease;" style-hover="border-color: #39424F; transform: translateY(-2px); color: #F2F4F8;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #6366F1;">Case study</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 17px; font-weight: 600; line-height: 23px;">How Ramp cut reconciliation 92%</span>
+          <span style="margin-top: auto; font-size: 12px; font-weight: 500; color: #7A8494;">6 min read</span>
+        </a>
+        <a href="#" style="background: #11161E; border: 1px solid #232A35; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 10px; color: #F2F4F8; transition: border-color 160ms ease, transform 160ms ease;" style-hover="border-color: #39424F; transform: translateY(-2px); color: #F2F4F8;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: #6366F1;">Webinar</span>
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 17px; font-weight: 600; line-height: 23px;">Forecasting beyond the spreadsheet</span>
+          <span style="margin-top: auto; font-size: 12px; font-weight: 500; color: #7A8494;">45 min</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scheduling modal (Cal.com-style) -->
+  <sc-if value="{{ demoOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; animation: overlayIn 180ms ease;">
+      <div onClick="{{ stopProp }}" style="width: 720px; background: #151A22; border-radius: 16px; box-shadow: 0 32px 80px rgba(13, 17, 23, 0.3); overflow: hidden; animation: modalIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1); font-family: Inter, sans-serif;">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid #1E242E;">
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-family: Geist, Inter, sans-serif; font-size: 17px; font-weight: 600; color: #F2F4F8;">Schedule your Nowak Demo</span>
+            <span style="font-size: 13px; font-weight: 500; color: #7A8494;">30 min · Google Meet · with a Nowak finance specialist</span>
+          </div>
+          <button onClick="{{ closeModal }}" style="cursor: pointer; width: 32px; height: 32px; border-radius: 8px; border: 1px solid #232A35; background: #151A22; color: #9AA4B2; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: border-color 160ms ease;" style-hover="border-color: #39424F;">✕</button>
+        </div>
+        <div style="padding: 24px; display: flex; flex-direction: column; gap: 20px;">
+          <div style="display: flex; gap: 10px;">
+            <sc-for list="{{ days }}" as="day" hint-placeholder-count="5">
+              <button onClick="{{ day.pick }}" style="cursor: pointer; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 0; border-radius: 10px; border: 1px solid {{ day.border }}; background: {{ day.bg }}; transition: border-color 160ms ease;">
+                <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: {{ day.subColor }};">{{ day.dow }}</span>
+                <span style="font-family: Geist, Inter, sans-serif; font-size: 18px; font-weight: 600; color: {{ day.color }};">{{ day.date }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+            <sc-for list="{{ times }}" as="t" hint-placeholder-count="8">
+              <button onClick="{{ t.pick }}" style="cursor: pointer; padding: 11px 0; border-radius: 8px; border: 1px solid {{ t.border }}; background: {{ t.bg }}; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; color: {{ t.color }}; transition: border-color 160ms ease;" style-hover="border-color: #6366F1;">{{ t.label }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ confirmDemo }}" disabled="{{ confirmDisabled }}" style="cursor: pointer; height: 48px; border: none; border-radius: 10px; background: {{ confirmBg }}; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; color: #FFFFFF; transition: background 160ms ease;">{{ confirmLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Video tour modal -->
+  <sc-if value="{{ tourOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 100; animation: overlayIn 180ms ease;">
+      <div onClick="{{ stopProp }}" style="width: 960px; animation: modalIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <span style="font-family: Geist, Inter, sans-serif; font-size: 15px; font-weight: 600; color: #FFFFFF;">Nowak Product Tour · 2:47</span>
+          <button onClick="{{ closeModal }}" style="cursor: pointer; width: 32px; height: 32px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.25); background: transparent; color: #FFFFFF; font-size: 14px; display: flex; align-items: center; justify-content: center;" style-hover="border-color: rgba(255,255,255,0.6);">✕</button>
+        </div>
+        <div style="width: 960px; height: 540px; border-radius: 14px; background: #05070A; box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; position: relative; overflow: hidden;">
+          <button onClick="{{ togglePlay }}" style="cursor: pointer; width: 76px; height: 76px; border-radius: 50%; border: none; background: rgba(255, 255, 255, 0.95); color: #10141B; font-size: 22px; display: flex; align-items: center; justify-content: center; padding-left: {{ playPad }}; transition: transform 160ms ease;" style-hover="transform: scale(1.08);">{{ playGlyph }}</button>
+          <span style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: #7A8494;">embed slot — Vimeo / Wistia player, 16:9</span>
+          <div style="position: absolute; left: 24px; right: 24px; bottom: 20px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.15);"><div style="width: {{ playProgress }}; height: 100%; border-radius: 2px; background: #6366F1; transition: width 300ms linear;"></div></div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Stub-navigation toast -->
+  <sc-if value="{{ toastVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; right: 32px; bottom: 32px; z-index: 200; display: flex; align-items: center; gap: 10px; background: #E9EDF4; color: #10141B; font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; line-height: 20px; border-radius: 10px; padding: 12px 18px; box-shadow: 0 12px 32px rgba(13, 17, 23, 0.35); animation: modalIn 200ms cubic-bezier(0.2, 0.8, 0.2, 1);">
+      <span style="width: 6px; height: 6px; border-radius: 50%; background: #6366F1;"></span>
+      {{ toastText }}
+    </div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;dropdownTrigger&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;hover&quot;,&quot;click&quot;],&quot;default&quot;:&quot;hover&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Navigation&quot;},&quot;showEyebrow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;showLogoStrip&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+class Component extends DCLogic {
+  state = { modal: null, day: 1, time: null, confirmed: false, playing: false, progress: 18, toast: null, tab: 0, openMenu: null };
+
+  animateScrollTo(targetY) {
+    cancelAnimationFrame(this.scrollRaf);
+    const startY = window.scrollY;
+    const dist = targetY - startY;
+    const dur = 500;
+    const t0 = performance.now();
+    const ease = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    const step = (now) => {
+      const p = Math.min((now - t0) / dur, 1);
+      window.scrollTo(0, startY + dist * ease(p));
+      if (p < 1) this.scrollRaf = requestAnimationFrame(step);
+    };
+    this.scrollRaf = requestAnimationFrame(step);
+  }
+
+  scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) this.animateScrollTo(el.getBoundingClientRect().top + window.scrollY - 24);
+  }
+
+  nav(label) {
+    clearTimeout(this.toastTimer);
+    this.setState({ toast: 'Page routing simulated: Navigating to ' + label + '...' });
+    this.toastTimer = setTimeout(() => this.setState({ toast: null }), 2200);
+  }
+
+  componentDidMount() {
+    this.onKey = (e) => { if (e.key === 'Escape') this.setState({ modal: null, openMenu: null }); };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKey);
+    clearTimeout(this.toastTimer);
+    clearInterval(this.playTimer);
+  }
+
+  renderVals() {
+    const { modal, day, time, confirmed } = this.state;
+    const dayData = [
+      { dow: 'Mon', date: '13' }, { dow: 'Tue', date: '14' }, { dow: 'Wed', date: '15' },
+      { dow: 'Thu', date: '16' }, { dow: 'Fri', date: '17' },
+    ];
+    const timeData = ['9:00 AM', '9:30 AM', '10:00 AM', '11:30 AM', '1:00 PM', '2:30 PM', '4:00 PM', '4:30 PM'];
+
+    const days = dayData.map((d, i) => {
+      const sel = i === day;
+      return {
+        dow: d.dow, date: d.date,
+        border: sel ? '#6366F1' : '#232A35',
+        bg: sel ? 'rgba(99, 102, 241, 0.1)' : '#151A22',
+        color: sel ? '#6366F1' : '#F2F4F8',
+        subColor: sel ? '#6366F1' : '#7A8494',
+        pick: () => this.setState({ day: i, time: null, confirmed: false }),
+      };
+    });
+
+    const times = timeData.map((label, i) => {
+      const sel = i === time;
+      return {
+        label,
+        border: sel ? '#6366F1' : '#232A35',
+        bg: sel ? '#6366F1' : '#151A22',
+        color: sel ? '#FFFFFF' : '#F2F4F8',
+        pick: () => this.setState({ time: i, confirmed: false }),
+      };
+    });
+
+    const tabs = ['Overview', 'Forecasting', 'Spend', 'Reconciliation', 'Reports'].map((label, i) => {
+      const sel = i === this.state.tab;
+      return {
+        label,
+        bg: sel ? 'rgba(99, 102, 241, 0.08)' : 'transparent',
+        color: sel ? '#6366F1' : '#9AA4B2',
+        weight: sel ? 600 : 500,
+        iconBg: sel ? '#6366F1' : '#39424F',
+        pick: () => this.setState({ tab: i }),
+      };
+    });
+
+    const trigger = this.props.dropdownTrigger ?? 'hover';
+    const menus = {
+      Product: [
+        { label: 'Features', desc: 'Forecasting, spend & close automation', target: 'section-product' },
+        { label: 'Integrations', desc: 'ERP, banks & data warehouse connectors', target: 'section-product' },
+        { label: 'Security', desc: 'SOC 2 Type II, SSO & audit logs', target: 'section-product' },
+      ],
+      Solutions: [
+        { label: 'For CFOs', desc: 'Live cash, burn & board reporting', target: 'section-solutions' },
+        { label: 'For Controllers', desc: 'Continuous close & audit trails', target: 'section-solutions' },
+        { label: 'For FP&A Teams', desc: 'Scenario planning on live actuals', target: 'section-solutions' },
+      ],
+    };
+    const navLinks = [
+      ['Product', 'section-product'], ['Solutions', 'section-solutions'],
+      ['Pricing', 'section-pricing'], ['Resources', 'section-resources'],
+    ].map(([label, target]) => {
+      const menu = menus[label];
+      const isOpen = this.state.openMenu === label;
+      return {
+        label,
+        caret: menu ? '▾' : '',
+        color: isOpen ? '#6366F1' : '#F2F4F8',
+        open: isOpen,
+        items: (menu || []).map((it) => ({
+          label: it.label, desc: it.desc,
+          go: (e) => { e.preventDefault(); this.setState({ openMenu: null }); this.scrollToSection(it.target); },
+        })),
+        go: (e) => {
+          e.preventDefault();
+          if (menu && (trigger === 'click' || !isOpen)) this.setState({ openMenu: isOpen ? null : label });
+          else { this.setState({ openMenu: null }); this.scrollToSection(target); }
+          if (!menu) this.scrollToSection(target);
+        },
+        enter: () => { if (menu && trigger === 'hover') this.setState({ openMenu: label }); },
+        leave: () => { if (trigger === 'hover') this.setState({ openMenu: null }); },
+      };
+    });
+
+    const canConfirm = time !== null;
+    return {
+      tabs,
+      demoOpen: modal === 'demo',
+      tourOpen: modal === 'tour',
+      openDemo: () => this.setState({ modal: 'demo', confirmed: false }),
+      openTour: () => this.setState({ modal: 'tour' }),
+      closeModal: () => { clearInterval(this.playTimer); this.setState({ modal: null, playing: false, progress: 18 }); },
+      navLinks,
+      goHome: (e) => { e.preventDefault(); this.animateScrollTo(0); },
+      goSignIn: (e) => { e.preventDefault(); this.nav('Sign in'); },
+      showEyebrow: this.props.showEyebrow ?? true,
+      showLogoStrip: this.props.showLogoStrip ?? true,
+      toastVisible: !!this.state.toast,
+      toastText: this.state.toast,
+      togglePlay: () => {
+        const playing = !this.state.playing;
+        clearInterval(this.playTimer);
+        if (playing) {
+          this.playTimer = setInterval(() => {
+            const p = this.state.progress + 1;
+            if (p >= 100) { clearInterval(this.playTimer); this.setState({ progress: 100, playing: false }); }
+            else this.setState({ progress: p });
+          }, 300);
+        }
+        this.setState({ playing });
+      },
+      playing: this.state.playing,
+      playGlyph: this.state.playing ? '❚❚' : '▶',
+      playPad: this.state.playing ? '0' : '6px',
+      playProgress: this.state.progress + '%',
+      stopProp: (e) => e.stopPropagation(),
+      days, times,
+      confirmDisabled: !canConfirm,
+      confirmBg: confirmed ? '#22C55E' : (canConfirm ? '#6366F1' : '#39424F'),
+      confirmLabel: confirmed
+        ? '✓ Confirmed — invite sent to your calendar'
+        : (canConfirm ? 'Confirm ' + timeData[time] + ' · ' + dayData[day].dow + ', Jul ' + dayData[day].date : 'Select a time'),
+      confirmDemo: () => { if (canConfirm) this.setState({ confirmed: true }); },
+    };
+  }
+}
+</script>
+<script>
+(async () => {
+  if (!document.title || !document.title.trim()) document.title = "Synapse Hero v2 Dark";
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    print-color-adjust: exact; -webkit-print-color-adjust: exact;\n    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  // Project support.js may predate runtime default-seeding; push via bridge.
+  if (isDc && window.__dcSetProps && window.__dcRootName) {
+    try {
+      const dpEl = document.querySelector('script[data-dc-script]');
+      const meta = JSON.parse((dpEl && dpEl.getAttribute('data-props')) || '{}');
+      const bag = {};
+      for (const k in meta)
+        if (k[0] !== '$' && meta[k] && meta[k].default !== undefined)
+          bag[k] = meta[k].default;
+      if (Object.keys(bag).length) {
+        window.__dcSetProps(window.__dcRootName(), bag);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    } catch (e) {}
+  }
+  // Reveal content gated on scroll or visibility before printing. Lazy <img>,
+  // IntersectionObserver fade-ins, and collapsed <details> don't render while
+  // off-screen, so a long page would print with them blank or closed. Open
+  // every <details>, force native-lazy images eager, and scroll the document
+  // through its full height to trip lazy-load + IO; then wait (bounded) for the
+  // newly-triggered images. Inert for deck-stage (slides aren't scroll-gated).
+  try {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+    for (const img of document.querySelectorAll('img[loading="lazy"]'))
+      img.loading = 'eager';
+    const scroller = document.scrollingElement || document.documentElement;
+    const full = Math.max(scroller.scrollHeight, document.body.scrollHeight);
+    const step = window.innerHeight || 800;
+    for (let y = 0; y <= full; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    window.scrollTo(0, 0);
+    await Promise.race([
+      Promise.all(
+        [...document.images].map((img) =>
+          img.complete
+            ? null
+            : new Promise((res) => {
+                img.addEventListener('load', res, { once: true });
+                img.addEventListener('error', res, { once: true });
+              })
+        )
+      ),
+      new Promise((r) => setTimeout(r, 4000)),
+    ]);
+  } catch (e) {}
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  // Re-append deck-stage's @page last so no author @page can add a margin and
+  // spill each full-bleed slide onto two sheets. Backstop for old copies.
+  if (ds) {
+    let pg = document.getElementById('deck-stage-print-page');
+    if (!pg) {
+      pg = document.createElement('style');
+      pg.textContent = '@page{size:' + (+ds.getAttribute('width') || 1920) +
+        'px ' + (+ds.getAttribute('height') || 1080) + 'px;margin:0}';
+    }
+    document.body.appendChild(pg);
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  // A document that owns its print CSS (the doc-page starter injects the
+  // meta at runtime; hand-rolled print designs author it) gets no automatic
+  // page geometry and keeps its forced breaks: strip the injected default
+  // @page — write time cannot see a runtime-injected meta — skip the frame
+  // override below, and skip the fakepage-flattening further down. What
+  // still applies: the print baseline and break-hygiene defaults (no @page
+  // in either; low specificity, so the document's own print CSS wins) and
+  // the break-inside relaxation on >page elements (avoid on those cannot
+  // be honored whoever authored it).
+  var ownsPrint = !!document.querySelector('meta[name="omelette-owns-print" i]');
+  if (ownsPrint) {
+    var dst = document.querySelector('style[data-omelette-print-defaults]');
+    if (dst && dst.textContent) {
+      dst.textContent = dst.textContent.replace(/@page\b[^{}]*\{[^}]*\}/, '');
+    }
+  }
+  // Size the PDF page to the rendered design unless the file opted into
+  // standard paper via @page{size:letter|A4|…} or declared print ownership
+  // via the meta above. Decks own their own @page.
+  // Wrappers (body, …) lose padding+margin so the frame sits at (0,0); the
+  // frame itself loses only margin — its padding is INSIDE the measured
+  // rect and must stay, or content shifts and leaves a gap at bottom/right.
+  var __m = null;
+  try { __m = (() => {
+  var STAMP = true;
+  var docEl = document.documentElement;
+  var doc = { width: docEl.scrollWidth, height: docEl.scrollHeight };
+  // Name-presence check, case-insensitive — the same contract as the
+  // instant-PDF path's runtime check in deck-stage-export.ts. The name is
+  // a string literal here because that file interpolates this script into
+  // its print script, so importing a shared constant from it would be a
+  // cycle; measure.test.ts pins the literal so the two cannot drift apart
+  // silently.
+  var ownsPrint = !!document.querySelector('meta[name="omelette-owns-print" i]');
+
+  var ds = document.querySelector('deck-stage');
+  if (ds) {
+    var dw = Number(ds.getAttribute('width')) || 1920;
+    var dh = Number(ds.getAttribute('height')) || 1080;
+    var n = typeof ds.length === 'number' ? ds.length : ds.children.length;
+    var idx = typeof ds.index === 'number' ? ds.index : 0;
+    var frames = [];
+    for (var i = 0; i < n; i++) frames.push({ left: 0, top: 0, width: dw, height: dh });
+    return { kind: 'deck', source: 'declared', doc: doc, frames: frames,
+      authored: frames.map(function(){return{width:true,height:true}}),
+      deck: { width: dw, height: dh, slideCount: n, index: idx },
+      signals: { paperPage: false, pxPage: false, ownsPrint: ownsPrint } };
+  }
+
+  // Declared kind: a doc-page tag names the kind outright, so no signal
+  // heuristics run (like the deck branch above, signals report false —
+  // they describe inferred classifications only). The tag alone is not
+  // trusted: the element must have upgraded (shadowRoot present), so a
+  // leftover tag whose script was deleted falls through to the heuristics
+  // that handle plain markup.
+  var stageSx = window.scrollX || 0, stageSy = window.scrollY || 0;
+  var dp = document.querySelector('doc-page');
+  if (dp && dp.shadowRoot) {
+    // Crop to the sheet, not the host — the desk around it is screen-only
+    // chrome that must not land in PNG exports.
+    var sheet = dp.shadowRoot.querySelector('.sheet');
+    var sr = (sheet || dp).getBoundingClientRect();
+    return { kind: 'paper-doc', source: 'declared', doc: doc,
+      frames: [{ left: sr.left + stageSx, top: sr.top + stageSy,
+        width: sr.width, height: sr.height }],
+      authored: [{ width: false, height: false }],
+      signals: { paperPage: false, pxPage: false, ownsPrint: ownsPrint } };
+  }
+  var paperPage = false, pxPage = false;
+  var eachRule = function (fn) {
+    for (var s = 0; s < document.styleSheets.length; s++) {
+      var rs; try { rs = document.styleSheets[s].cssRules; } catch (e) { continue; }
+      for (var r = 0; r < rs.length; r++) {
+        fn(rs[r]);
+        if (rs[r].cssRules) for (var n = 0; n < rs[r].cssRules.length; n++) fn(rs[r].cssRules[n]);
+      }
+    }
+  };
+  eachRule(function (r) {
+    if (r.type !== 6) return;
+    var m = /\bsize\s*:\s*([^;}]+)/i.exec(r.cssText || '');
+    if (!m) return;
+    if (/\b(letter|a[3-5]|legal|ledger)\b/i.test(m[1])) paperPage = true;
+    if (/\d+(?:\.\d+)?px\b/i.test(m[1])) pxPage = true;
+  });
+  var signals = { paperPage: paperPage, pxPage: pxPage, ownsPrint: ownsPrint };
+
+  var pxVal = function (v) {
+    var m = /^(\d+(?:\.\d+)?)px$/.exec(v || ''); return m ? +m[1] : 0;
+  };
+  var authoredPx = function (el, prop) {
+    if (pxVal(el.style[prop])) return true;
+    var attr = el.getAttribute(prop);
+    if (attr && /^\d+$/.test(attr)) return true;
+    var hit = false;
+    eachRule(function (r) {
+      if (hit || r.type !== 1 || !r.style) return;
+      try { if (el.matches(r.selectorText) && pxVal(r.style[prop])) hit = true; } catch (e) {}
+    });
+    return hit;
+  };
+
+  var el = document.body, rootPxW = false;
+  for (;;) {
+    var kids = [];
+    for (var c = 0; c < el.children.length; c++) {
+      var t = el.children[c].tagName;
+      if (t !== 'SCRIPT' && t !== 'STYLE' && t !== 'TEMPLATE') kids.push(el.children[c]);
+    }
+    if (kids.length !== 1 || !(kids[0] instanceof HTMLElement)) break;
+    if (STAMP) el.setAttribute('data-om-frame-wrap', '');
+    el = kids[0];
+    rootPxW = authoredPx(el, 'width');
+    if (rootPxW) break;
+  }
+  if (!rootPxW) rootPxW = authoredPx(el, 'width');
+
+  // @page{size:letter} alone is a flowing doc; with a px-width root it's a
+  // fixed sheet pretending to be paper — fall through and size to render.
+  if (paperPage && !rootPxW) {
+    return { kind: 'paper-doc', source: 'inferred', doc: doc, signals: signals,
+      frames: [{ left: 0, top: 0, width: doc.width, height: doc.height }],
+      authored: [{ width: false, height: false }] };
+  }
+
+  var sx = window.scrollX || 0, sy = window.scrollY || 0;
+  var rectOf = function (e) {
+    var r = e.getBoundingClientRect();
+    var oy; try { oy = getComputedStyle(e).overflowY; } catch (err) {}
+    var h = oy === 'visible' ? Math.max(r.height, e.scrollHeight || 0) : r.height;
+    return { left: r.left + sx, top: r.top + sy, width: r.width, height: h };
+  };
+
+  // Multi-frame: off unless the page opts in via data-om-multi-frame on the
+  // stop element — the explicit opt-in is what guards against card grids
+  // and pricing tables that match the geometry but aren't separate
+  // canvases. Two ways to name the frames, explicit first:
+  // 1. Descendants marked data-om-frame-export (the social-frames starter
+  //    marks each asset frame; shells/panels around them are presentation,
+  //    so nesting is expected). Document order.
+  // 2. Fallback, no marked descendants: direct children with an authored px
+  //    width AND height (the original geometry heuristic).
+  // Frames may be different sizes (a gallery mixes 1080×1920 stories with
+  // 728×90 banners); data-om-frame-label rides along for export filenames.
+  if (el.hasAttribute('data-om-multi-frame')) {
+    var visOk = function (e) {
+      var cs; try { cs = getComputedStyle(e); } catch (err) { return false; }
+      return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.position !== 'fixed';
+    };
+    // A frame's crop is its VISUAL box — never the scrollHeight-inflated
+    // rect that rectOf computes for page roots. Shadow-DOM hover controls
+    // (image-slot's Replace bar parks 29px below its host) and similar
+    // escaping UI contribute scrollable overflow to the frame, and the
+    // inflated height both squashes the nominal-size resize and drags
+    // content below the frame into the crop. Zoom-independent; bit every
+    // slot-bearing frame.
+    var frameRectOf = function (e) {
+      var r = e.getBoundingClientRect();
+      return { left: r.left + sx, top: r.top + sy, width: r.width, height: r.height };
+    };
+    var pushCand = function (list, e) {
+      if (!visOk(e)) return;
+      var rc = frameRectOf(e);
+      if (rc.width < 2 || rc.height < 2) return;
+      var lbl = e.getAttribute('data-om-frame-label');
+      if (lbl) rc.label = lbl;
+      list.push(rc);
+    };
+    var cands = [];
+    var marked = el.querySelectorAll('[data-om-frame-export]');
+    if (marked.length) {
+      for (var mk = 0; mk < marked.length; mk++) pushCand(cands, marked[mk]);
+    } else {
+      for (var k = 0; k < el.children.length; k++) {
+        var ch = el.children[k];
+        if (!authoredPx(ch, 'width') || !authoredPx(ch, 'height')) continue;
+        pushCand(cands, ch);
+      }
+    }
+    if (cands.length >= 2) {
+      return { kind: 'multi-frame', source: 'inferred', doc: doc, signals: signals,
+        frames: cands, authored: cands.map(function(){return{width:true,height:true}}) };
+    }
+  }
+
+  if (STAMP) el.setAttribute('data-om-frame', '');
+  return { kind: 'single-canvas', source: 'inferred', doc: doc, signals: signals,
+    frames: [rectOf(el)],
+    authored: [{ width: rootPxW, height: authoredPx(el, 'height') }] };
+})(); } catch (e) {}
+  var frame = null;
+  if (!ownsPrint && __m && __m.kind === 'single-canvas') {
+    var f = __m.frames && __m.frames[0];
+    if (f && f.width >= 200 && f.height >= 200) {
+      frame = f;
+      var fst = document.createElement('style');
+      fst.textContent = '@media print{@page{size:' + Math.ceil(f.width) + 'px ' +
+        Math.ceil(f.height) + 'px;margin:0}' +
+        'html,body,[data-om-frame-wrap]{padding:0!important;margin:0!important;background:none!important}' +
+        '[data-om-frame]{margin:0!important}}';
+      document.body.appendChild(fst);
+    }
+  }
+  // Relax break-inside on oversized elements. An element taller than a
+  // printable page can't honor break-inside: avoid — browsers either overflow
+  // it or push it whole to the next page, leaving a blank gap, then break it
+  // anyway at an arbitrary point. After the final layout (content revealed,
+  // animations jumped), find elements taller than a page that still compute
+  // break-inside: avoid and reset them to auto, so the browser breaks them at
+  // their children's boundaries instead (children keep their own avoid). PAGE_PX
+  // is a conservative portrait estimate at 96 CSS px/in — Letter/A4 usable
+  // height minus our 0.5in margins — so only clearly-oversized elements are
+  // touched and under-page elements still stay whole. Skipped for decks (slides
+  // are sized to the page) and for fixed-size canvases (frame set, or an author
+  // px-based @page) — runs as before for flowing docs on letter/A4.
+  try {
+    if (!ds && !frame && !(__m && __m.signals && __m.signals.pxPage)) {
+      const PAGE_PX = 1024;
+      // Our print defaults add a real @page margin only when the source has
+      // no @page of its own; computed style can't tell us (it reports screen
+      // media), so read the injected rule directly.
+      const defaults = document.querySelector('style[data-omelette-print-defaults]');
+      const pageInset = /@page\s*\{[^}]*margin/.test(defaults ? defaults.textContent || '' : '');
+      const SEL = 'section,article,figure,table,pre,blockquote,[class~="card" i],[class~="page" i],[class~="sheet" i]';
+      for (const el of document.body.querySelectorAll(SEL)) {
+        if (el instanceof HTMLElement && el.offsetHeight > PAGE_PX) {
+          el.setAttribute('data-om-oversized', '');
+          // Fake-paged docs simulate sheets with over-tall break-after:page
+          // boxes; honoring the break spills half-blank pages and ends a
+          // colored box mid-sheet. Flow them, and (only when we own the page
+          // inset) drop the redundant padding/background via the rule below.
+          const cs = getComputedStyle(el);
+          // An owns-print doc's forced breaks are intentional sheet
+          // boundaries, never fake-paged simulation — don't strip them.
+          // The break-inside relaxation above still applies: avoid on a
+          // >page element is impossible to honor whoever authored it.
+          if (
+            !ownsPrint &&
+            (cs.breakAfter === 'page' || cs.pageBreakAfter === 'always')
+          ) {
+            el.setAttribute('data-om-fakepage', '');
+          }
+        }
+      }
+      const ost = document.createElement('style');
+      ost.textContent = '@media print{' +
+        '[data-om-oversized]{break-inside:auto !important;page-break-inside:auto !important}' +
+        '[data-om-fakepage]{break-after:auto !important;page-break-after:auto !important}' +
+        (pageInset ? '[data-om-fakepage]{padding:0 !important;background:none !important}' : '') +
+        '}';
+      document.head.appendChild(ost);
+    }
+  } catch (e) {}
+  // macOS Preview renders Skia-PDF Luminosity soft-masks as opaque grey boxes;
+  // swap the CSS that triggers them for Preview-safe forms.
+  try {
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+
+      if (cs.boxShadow !== 'none' && cs.filter === 'none') {
+        const outs = [], kept = [];
+        for (const s of cs.boxShadow.split(/,(?![^(]*[)])/)) {
+          const t = s.trim();
+          const m = t.match(/^(rgba?[(][^)]+[)]) (-?[0-9.]+px) (-?[0-9.]+px) ([0-9.]+px) -?[0-9.]+px$/);
+          if (m && parseFloat(m[4]) > 0) outs.push('drop-shadow(' + m[2] + ' ' + m[3] + ' ' + m[4] + ' ' + m[1] + ')');
+          else kept.push(t);
+        }
+        if (outs.length) {
+          el.style.setProperty('filter', outs.join(' '), 'important');
+          el.style.setProperty('box-shadow', kept.join(', ') || 'none', 'important');
+        }
+      }
+
+      const mask = cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+      if (mask && mask !== 'none' && cs.filter === 'none') el.style.setProperty('filter', 'opacity(1)', 'important');
+    }
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body>
+</html>
